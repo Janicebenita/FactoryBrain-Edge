@@ -1,5 +1,4 @@
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.middleware.cors import CORSMiddleware
 from snapdragon_evidence import load_snapdragon_evidence
 from fastapi import FastAPI
 from pydantic import BaseModel
