@@ -21,6 +21,10 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://factorybrain-edge-751411693796.asia-south1.run.app";
+
   const telemetry = {
     temperature: 82,
     vibration: 7.4,
@@ -30,35 +34,32 @@ export default function Home() {
   };
 
   async function runDiagnosis() {
-    setLoading(true);
-    setError("");
+  setLoading(true);
+  setError("");
 
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/predict`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(telemetry),
-        }
-      );
+  try {
+    const response = await fetch(`${API_BASE_URL}/predict`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(telemetry),
+    });
 
-      if (!response.ok) {
-        throw new Error("Prediction request failed");
-      }
-
-      const result = await response.json();
-      setPrediction(result);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Unknown error"
-      );
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      throw new Error(`Prediction request failed: ${response.status}`);
     }
+
+    const result = await response.json();
+    setPrediction(result);
+  } catch (err) {
+    setError(
+      err instanceof Error ? err.message : "Unknown error"
+    );
+  } finally {
+    setLoading(false);
   }
+}
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
