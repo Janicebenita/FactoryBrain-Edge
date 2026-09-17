@@ -1,0 +1,12 @@
+FactoryBrain Edge - ONNX Benchmark
+----------------------------------
+Model: models/pump_failure_model.onnx
+Model size: 715.97 KB
+Runs: 1000
+Mean latency: 0.0341 ms
+Median latency: 0.0344 ms
+P95 latency: 0.0378 ms
+P99 latency: 0.0532 ms
+Min latency: 0.0279 ms
+Max latency: 0.1250 ms
+Execution provider: ['CPUExecutionProvider']

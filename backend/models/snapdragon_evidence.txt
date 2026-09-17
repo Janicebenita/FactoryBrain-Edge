@@ -1,0 +1,31 @@
+FactoryBrain Edge - Snapdragon Evidence
+
+Target:
+Snapdragon X Elite CRD
+Windows 11
+Chipset: SC8380XP
+
+Model:
+pump_mlp.onnx
+
+Input:
+telemetry [1,5]
+
+Compile Job:
+jg9z40mlp
+
+Compile Status:
+SUCCESS
+
+Compiled Model:
+mm5lrdz6q
+
+Profile Result:
+All listed Gemm / ReLU / Input / Output operators
+reported compute_unit = NPU.
+
+Profiler raw estimated_inference_time:
+32
+
+Date:
+17 Sep 2026

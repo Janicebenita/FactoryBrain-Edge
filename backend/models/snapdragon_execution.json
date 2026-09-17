@@ -1,0 +1,14 @@
+{
+  "verified": true,
+  "model": "pump_mlp.onnx",
+  "target": "Snapdragon X Elite CRD",
+  "os": "Windows 11",
+  "chipset": "SC8380XP",
+  "compute_unit": "NPU",
+  "compile_job_id": "jg9z40mlp",
+  "compiled_model_id": "mm5lrdz6q",
+  "input_name": "telemetry",
+  "input_shape": [1, 5],
+  "profile_source": "Qualcomm AI Hub",
+  "status": "VERIFIED"
+}
