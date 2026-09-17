@@ -1,4 +1,5 @@
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 from snapdragon_evidence import load_snapdragon_evidence
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -17,7 +18,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "http://127.0.0.1:3000",
+        "https://factory-brain-edge.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
