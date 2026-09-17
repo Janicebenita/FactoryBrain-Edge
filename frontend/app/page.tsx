@@ -16,50 +16,79 @@ type Prediction = {
   };
 };
 
+type TelemetryState = {
+  temperature: number;
+  vibration: number;
+  pressure: number;
+  rpm: number;
+  motor_current: number;
+};
+
 export default function Home() {
   const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://factorybrain-edge-751411693796.asia-south1.run.app";
-
-  const telemetry = {
+  const [telemetry, setTelemetry] = useState<TelemetryState>({
     temperature: 82,
     vibration: 7.4,
     pressure: 4.7,
     rpm: 2840,
     motor_current: 13.2,
-  };
+  });
+
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://factorybrain-edge-751411693796.asia-south1.run.app";
+
+  function updateTelemetry(
+    field: keyof TelemetryState,
+    value: number
+  ) {
+    setTelemetry((current) => ({
+      ...current,
+      [field]: value,
+    }));
+
+    setPrediction(null);
+    setError("");
+  }
 
   async function runDiagnosis() {
-  setLoading(true);
-  setError("");
+    setLoading(true);
+    setError("");
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/predict`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(telemetry),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/predict`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(telemetry),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Prediction request failed: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Prediction request failed: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setPrediction(result);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Unknown error"
+      );
+    } finally {
+      setLoading(false);
     }
-
-    const result = await response.json();
-    setPrediction(result);
-  } catch (err) {
-    setError(
-      err instanceof Error ? err.message : "Unknown error"
-    );
-  } finally {
-    setLoading(false);
   }
-}
+
+  const diagnosisLabel = prediction
+    ? prediction.prediction.replaceAll("_", " ")
+    : "";
+
+  const recommendation = getRecommendation(
+    prediction?.prediction
+  );
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -111,25 +140,113 @@ const API_BASE_URL =
               </div>
 
               <span className="rounded-full bg-amber-500/15 px-4 py-2 text-sm font-semibold text-amber-400">
-                WARNING
+                LIVE TELEMETRY
               </span>
             </div>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-              <Telemetry label="Temperature" value="82 °C" />
-              <Telemetry label="Vibration" value="7.4 mm/s" />
-              <Telemetry label="Pressure" value="4.7 bar" />
-              <Telemetry label="RPM" value="2840" />
-              <Telemetry label="Motor Current" value="13.2 A" />
+              <TelemetryInput
+                label="Temperature"
+                unit="°C"
+                value={telemetry.temperature}
+                min={20}
+                max={120}
+                step={0.5}
+                onChange={(value) =>
+                  updateTelemetry("temperature", value)
+                }
+              />
+
+              <TelemetryInput
+                label="Vibration"
+                unit="mm/s"
+                value={telemetry.vibration}
+                min={0}
+                max={15}
+                step={0.1}
+                onChange={(value) =>
+                  updateTelemetry("vibration", value)
+                }
+              />
+
+              <TelemetryInput
+                label="Pressure"
+                unit="bar"
+                value={telemetry.pressure}
+                min={0}
+                max={10}
+                step={0.1}
+                onChange={(value) =>
+                  updateTelemetry("pressure", value)
+                }
+              />
+
+              <TelemetryInput
+                label="RPM"
+                unit=""
+                value={telemetry.rpm}
+                min={500}
+                max={4000}
+                step={10}
+                onChange={(value) =>
+                  updateTelemetry("rpm", value)
+                }
+              />
+
+              <TelemetryInput
+                label="Motor Current"
+                unit="A"
+                value={telemetry.motor_current}
+                min={0}
+                max={30}
+                step={0.1}
+                onChange={(value) =>
+                  updateTelemetry("motor_current", value)
+                }
+              />
             </div>
 
-            <button
-              onClick={runDiagnosis}
-              disabled={loading}
-              className="mt-8 rounded-xl bg-cyan-500 px-6 py-3 font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-50"
-            >
-              {loading ? "Running AI..." : "Run AI Diagnosis"}
-            </button>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <button
+                onClick={runDiagnosis}
+                disabled={loading}
+                className="rounded-xl bg-cyan-500 px-6 py-3 font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-50"
+              >
+                {loading ? "Running AI..." : "Run AI Diagnosis"}
+              </button>
+
+              <button
+                onClick={() => {
+                  setTelemetry({
+                    temperature: 72.5,
+                    vibration: 2.1,
+                    pressure: 4.8,
+                    rpm: 1450,
+                    motor_current: 12.4,
+                  });
+                  setPrediction(null);
+                }}
+                className="rounded-xl border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-300 hover:border-slate-500"
+              >
+                Load Normal Sample
+              </button>
+
+              <button
+                onClick={() => {
+                  setTelemetry({
+                    temperature: 82,
+                    vibration: 7.4,
+                    pressure: 4.7,
+                    rpm: 2840,
+                    motor_current: 13.2,
+                  });
+                  setPrediction(null);
+                }}
+                className="rounded-xl border border-amber-500/30 px-5 py-3 text-sm font-semibold text-amber-300 hover:border-amber-400"
+              >
+                Load Warning Sample
+              </button>
+            </div>
 
             {error && (
               <p className="mt-4 text-red-400">
@@ -143,21 +260,51 @@ const API_BASE_URL =
                   AI Diagnosis
                 </p>
 
-                <h3 className="mt-2 text-2xl font-bold text-amber-400">
-                  {prediction.prediction}
+                <h3 className="mt-2 text-2xl font-bold capitalize text-amber-400">
+                  {diagnosisLabel}
                 </h3>
 
                 <p className="mt-2 text-slate-300">
-                  Confidence:
-                  {" "}
+                  Prediction confidence:{" "}
                   {(prediction.risk_score * 100).toFixed(2)}%
                 </p>
 
+                {prediction.class_probabilities && (
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                    {Object.entries(
+                      prediction.class_probabilities
+                    ).map(([label, probability]) => (
+                      <div
+                        key={label}
+                        className="rounded-lg border border-slate-800 bg-slate-900 p-3"
+                      >
+                        <p className="text-xs uppercase tracking-wide text-slate-500">
+                          {label.replaceAll("_", " ")}
+                        </p>
+                        <p className="mt-1 font-semibold text-slate-200">
+                          {(probability * 100).toFixed(2)}%
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-5 rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-cyan-400">
+                    Recommended action
+                  </p>
+                  <p className="mt-2 text-sm text-slate-300">
+                    {recommendation}
+                  </p>
+                </div>
+
                 {prediction.execution && (
-                  <div className="mt-4 text-sm text-slate-400">
+                  <div className="mt-5 text-sm text-slate-400">
                     Runtime: {prediction.execution.runtime}
                     {" · "}
                     Model: {prediction.execution.model}
+                    {" · "}
+                    Provider: {prediction.execution.provider}
                   </div>
                 )}
               </div>
@@ -214,12 +361,22 @@ function Metric({
   );
 }
 
-function Telemetry({
+function TelemetryInput({
   label,
+  unit,
   value,
+  min,
+  max,
+  step,
+  onChange,
 }: {
   label: string;
-  value: string;
+  unit: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (value: number) => void;
 }) {
   return (
     <div className="rounded-xl bg-slate-950 p-4">
@@ -227,9 +384,37 @@ function Telemetry({
         {label}
       </p>
 
-      <p className="mt-2 font-semibold">
-        {value}
-      </p>
+      <div className="mt-2 flex items-center gap-2">
+        <input
+          type="number"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(event) =>
+            onChange(Number(event.target.value))
+          }
+          className="w-full rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 font-semibold text-white outline-none focus:border-cyan-500"
+        />
+
+        {unit && (
+          <span className="text-sm text-slate-400">
+            {unit}
+          </span>
+        )}
+      </div>
+
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(event) =>
+          onChange(Number(event.target.value))
+        }
+        className="mt-3 w-full accent-cyan-400"
+      />
     </div>
   );
 }
@@ -252,4 +437,25 @@ function Row({
       </span>
     </div>
   );
+}
+
+function getRecommendation(
+  prediction?: string
+) {
+  switch (prediction) {
+    case "bearing_warning":
+      return "Inspect the drive-end bearing, verify shaft alignment, and review lubrication condition before the next production cycle.";
+
+    case "overheat":
+      return "Inspect cooling airflow, lubrication condition, motor loading, and bearing friction before continued operation.";
+
+    case "pressure_anomaly":
+      return "Inspect suction and discharge pressure, check for blockage or cavitation, and verify valve position and pump flow conditions.";
+
+    case "normal":
+      return "No immediate maintenance action is indicated. Continue normal monitoring and trend telemetry over time.";
+
+    default:
+      return "Review telemetry and equipment condition before scheduling maintenance.";
+  }
 }
