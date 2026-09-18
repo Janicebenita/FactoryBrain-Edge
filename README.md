@@ -157,7 +157,7 @@ jgolvkn4g
       │
       ▼
 VERIFIED
-
+```
 ## 🛠️ Technology Stack
 
 <p align="center">
