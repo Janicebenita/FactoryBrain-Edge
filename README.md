@@ -231,6 +231,7 @@ Recommended Maintenance Action
 
 ---
 
+
 ## 🌐 Production Deployment
 FactoryBrain Edge uses a split production architecture: the public Next.js frontend is deployed on **Vercel**, while the production FastAPI inference backend is deployed on **Google Cloud**.
 
