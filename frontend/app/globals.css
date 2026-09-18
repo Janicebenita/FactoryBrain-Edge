@@ -1,8 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --fb-bg: #071017;
+  --fb-bg-deep: #050b10;
+  --fb-surface: #0b1720;
+  --fb-surface-raised: #0f1d27;
+  --fb-surface-soft: #12232e;
+
+  --fb-border: #203540;
+  --fb-border-soft: #172b35;
+
+  --fb-text: #f3f7f9;
+  --fb-text-secondary: #a9bbc4;
+  --fb-text-muted: #738994;
+
+  --fb-primary: #19c3d8;
+  --fb-primary-soft: #0d7180;
+
+  --fb-success: #27d49b;
+  --fb-warning: #f5a742;
+  --fb-danger: #ef5b62;
+  --fb-runtime: #9c7cff;
+
+  --fb-radius-sm: 8px;
+  --fb-radius-md: 12px;
+  --fb-radius-lg: 16px;
+
+  --background: var(--fb-bg);
+  --foreground: var(--fb-text);
 }
 
 @theme inline {
@@ -12,15 +37,220 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--fb-bg-deep);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--fb-bg);
+  color: var(--fb-text);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a,
+input[type="range"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--fb-primary);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(25, 195, 216, 0.25);
+  color: #ffffff;
+}
+
+/* FactoryBrain scrollbar */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #28404b #081219;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #081219;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #28404b;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #35525f;
+}
+
+/* Industrial background treatment */
+
+.factory-industrial-bg {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 12, 17, 0.97) 0%,
+      rgba(5, 12, 17, 0.82) 44%,
+      rgba(5, 12, 17, 0.38) 100%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(25, 195, 216, 0.12),
+      transparent 32%
+    ),
+    #0a151d;
+}
+
+/* Reusable premium surfaces */
+
+.fb-panel {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 29, 39, 0.98),
+      rgba(9, 20, 28, 0.98)
+    );
+  border: 1px solid var(--fb-border);
+  border-radius: var(--fb-radius-lg);
+}
+
+.fb-panel-soft {
+  background: rgba(12, 25, 34, 0.78);
+  border: 1px solid var(--fb-border-soft);
+  border-radius: var(--fb-radius-md);
+}
+
+.fb-divider {
+  border-color: var(--fb-border-soft);
+}
+
+.fb-mono {
+  font-family: var(--font-geist-mono), monospace;
+}
+
+/* Status */
+
+.fb-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.fb-status-online {
+  background: var(--fb-success);
+  box-shadow: 0 0 0 4px rgba(39, 212, 155, 0.1);
+}
+
+.fb-status-warning {
+  background: var(--fb-warning);
+  box-shadow: 0 0 0 4px rgba(245, 167, 66, 0.1);
+}
+
+.fb-status-danger {
+  background: var(--fb-danger);
+  box-shadow: 0 0 0 4px rgba(239, 91, 98, 0.1);
+}
+
+/* Landscape application workspace */
+
+.factory-workspace {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 70% -10%,
+      rgba(25, 195, 216, 0.07),
+      transparent 30%
+    ),
+    var(--fb-bg);
+}
+
+/*
+  Desktop/laptop:
+  keep the main command centre within the viewport whenever
+  sufficient screen height is available.
+*/
+
+@media (min-width: 1024px) and (min-height: 720px) {
+  .factory-workspace {
+    height: 100vh;
+    min-height: 720px;
+    overflow: hidden;
+  }
+}
+
+/* Short laptop displays use a slightly denser rhythm,
+   without reducing text to unreadable sizes. */
+
+@media (min-width: 1024px) and (max-height: 820px) {
+  body {
+    font-size: 14px;
+  }
+
+  .fb-compact-gap {
+    gap: 10px !important;
+  }
+
+  .fb-compact-pad {
+    padding: 14px !important;
+  }
+}
+
+/* Mobile/tablet intentionally become vertically navigable. */
+
+@media (max-width: 1023px) {
+  .factory-workspace {
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
