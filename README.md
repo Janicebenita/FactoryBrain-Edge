@@ -1,16 +1,5 @@
-<p align="center">
+![FactoryBrain Edge — Industrial Predictive Maintenance with Snapdragon Edge AI](docs/assets/factorybrain-edge-banner.gif)
 
-&#x20; <img
-
-&#x20;   src="docs/assets/factorybrain-edge-banner.gif"
-
-&#x20;   alt="FactoryBrain Edge — Industrial Predictive Maintenance with Snapdragon Edge AI"
-
-&#x20;   width="100%"
-
-&#x20; />
-
-</p>
 # ⚙️ FactoryBrain Edge
 
 <p align="center">
