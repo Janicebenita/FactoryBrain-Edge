@@ -34,7 +34,7 @@ A separate copy of the same model artifact was compiled and profiled through Qua
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 <p align="center">
   <img
