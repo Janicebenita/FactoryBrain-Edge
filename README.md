@@ -227,6 +227,59 @@ Confidence + Class Probabilities
           │
           ▼
 Recommended Maintenance Action
+```
+
+---
+
+## 🌐 Production Deployment
+FactoryBrain Edge uses a split production architecture: the public Next.js frontend is deployed on **Vercel**, while the production FastAPI inference backend is deployed on **Google Cloud**.
+
+### ☁️ Google Cloud Backend
+
+```text
+GitHub Repository
+       │
+       ▼
+Google Cloud Build
+       │
+       ▼
+Artifact Registry
+       │
+       ▼
+Google Cloud Run
+       │
+       ▼
+FastAPI Inference API
+       │
+       ▼
+ONNX Runtime
+       │
+       ▼
+pump_mlp.onnx
+```
+
+| Service | FactoryBrain Edge Usage |
+|---|---|
+| 🏗️ Google Cloud Build | Builds the backend container from GitHub source |
+| 📦 Artifact Registry | Stores the backend container image |
+| 🚀 Google Cloud Run | Hosts the production FastAPI inference API |
+| 🧠 ONNX Runtime | Executes the predictive-maintenance model |
+
+**Google Cloud Project:** `factorybrain-edge`  
+**Region:** `asia-south1`  
+**Cloud Run Service:** `factorybrain-edge`
+
+### 🔌 Production Backend API
+
+https://factorybrain-edge-751411693796.asia-south1.run.app
+
+### ⚡ Snapdragon Evidence API
+
+https://factorybrain-edge-751411693796.asia-south1.run.app/runtime/snapdragon
+
+> **Deployment clarification:** Vercel hosts the public user interface. Google Cloud Run hosts the live inference backend. Qualcomm AI Hub Workbench separately provides the Snapdragon X Elite compilation and NPU profiling evidence.
+
+---
 
 ## 💻 Run Locally
 
