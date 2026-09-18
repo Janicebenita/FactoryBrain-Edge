@@ -11,7 +11,7 @@
   &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://factory-brain-edge.vercel.app/runtime"><strong>⚡ Snapdragon Evidence</strong></a>
   &nbsp;&nbsp;•&nbsp;&nbsp;
-  <a href="#-system-architecture"><strong>🏗️ Architecture</strong></a>
+  <a href="#system-architecture"><strong>🏗️ Architecture</strong></a>
 </p>
 
 ---
