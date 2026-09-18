@@ -67,7 +67,36 @@ def predict(data: TelemetryInput):
 
 @app.get("/runtime/snapdragon")
 def snapdragon_runtime():
+    evidence = load_snapdragon_evidence()
 
+    return {
+        "factorybrain_edge": {
+            "runtime": "Snapdragon",
+            "execution_verified": evidence.get("verified", False),
+            "model": evidence.get("model"),
+            "target": evidence.get("target"),
+            "os": evidence.get("os"),
+            "chipset": evidence.get("chipset"),
+            "compute_unit": evidence.get("compute_unit"),
+            "compile_job_id": evidence.get("compile_job_id"),
+            "compiled_model_id": evidence.get("compiled_model_id"),
+            "profile_job_id": evidence.get("profile_job_id"),
+            "input_name": evidence.get("input_name"),
+            "input_shape": evidence.get("input_shape"),
+            "profile_source": evidence.get("profile_source"),
+            "execution_provider": evidence.get("execution_provider"),
+            "htp_backend": evidence.get("htp_backend"),
+            "inference_iterations": evidence.get("inference_iterations"),
+            "profile_inference_time_us": evidence.get(
+                "profile_inference_time_us"
+            ),
+            "peak_inference_memory_mb": evidence.get(
+                "peak_inference_memory_mb"
+            ),
+            "runtime_version": evidence.get("runtime_version"),
+            "status": evidence.get("status")
+        }
+    }
     evidence = load_snapdragon_evidence()
 
     return {

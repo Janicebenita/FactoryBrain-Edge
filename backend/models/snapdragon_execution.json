@@ -7,8 +7,15 @@
   "compute_unit": "NPU",
   "compile_job_id": "jg9z40mlp",
   "compiled_model_id": "mm5lrdz6q",
+  "profile_job_id": "jgolvkn4g",
   "input_name": "telemetry",
   "input_shape": [1, 5],
-  "profile_source": "Qualcomm AI Hub",
+  "profile_source": "Qualcomm AI Hub Workbench",
+  "execution_provider": "QNNExecutionProvider",
+  "htp_backend": "QnnHtp.dll",
+  "inference_iterations": 100,
+  "profile_inference_time_us": 32,
+  "peak_inference_memory_mb": 1,
+  "runtime_version": "ONNX Runtime 1.27.1",
   "status": "VERIFIED"
 }
