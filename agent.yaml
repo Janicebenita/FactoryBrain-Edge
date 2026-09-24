@@ -1,0 +1,16 @@
+spec_version: "0.1.0"
+name: factorybrain-edge-maintenance-agent
+version: 1.0.0
+description: An industrial predictive-maintenance agent that analyzes pump telemetry and recommends maintenance actions.
+author: Janice Benita F
+model:
+  preferred: gpt-4o-mini
+runtime:
+  max_turns: 20
+  timeout: 120
+tags:
+  - predictive-maintenance
+  - industrial-ai
+  - edge-ai
+  - equipment-monitoring
+
