@@ -1,0 +1,15 @@
+spec_version: "0.1.0"
+name: factorybrain-edge-maintenance-agent
+version: 1.0.0
+description: Analyzes industrial pump telemetry with an ONNX model, explains equipment-health predictions, and recommends human-reviewed maintenance actions with traceable Snapdragon NPU profiling evidence.
+author: Janice Benita F
+runtime:
+  max_turns: 20
+  timeout: 120
+tags:
+  - predictive-maintenance
+  - industrial-ai
+  - onnx
+  - edge-ai
+  - snapdragon
+  - human-review
